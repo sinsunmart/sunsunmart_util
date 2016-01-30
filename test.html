@@ -1,0 +1,156 @@
+﻿
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title>Sign in &middot; Twitter Bootstrap</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <!-- Le styles -->
+    <link href="bootstrap/css/bootstrap.css" rel="stylesheet">
+    <style type="text/css">
+    .container {
+      max-width: 300px;
+      padding: 19px 29px 29px;
+      margin: 0 auto 20px;
+      background-color: #fff;
+      border: 1px solid #e5e5e5;
+      -webkit-border-radius: 5px;
+         -moz-border-radius: 5px;
+              border-radius: 5px;
+      -webkit-box-shadow: 0 1px 2px rgba(0,0,0,.05);
+         -moz-box-shadow: 0 1px 2px rgba(0,0,0,.05);
+              box-shadow: 0 1px 2px rgba(0,0,0,.05);
+    }
+
+    .input-block-level{
+      max-width: 150px;
+    }
+
+    </style>
+    <link href="bootstrap/css/bootstrap-responsive.css" rel="stylesheet">
+
+
+  </head>
+
+  <body>
+
+      <form class="form-signin" action="" >
+          <div class="container">
+
+              5만원권
+              <input type="text" class="input-block-level" name=_50000_input placeholder="수량" onfocusout="CalcFocusOut(50000)">
+              <div style="display:inline" name="_50000_sum" align="right">금액</div></br>
+
+              <button class="btn btn-medium btn-primary" onclick="OnclickFunc();" type="submit">
+                  Sum
+              </button><br /><br /><br />
+          </div>
+      </form>
+
+      <form class="form-signin" action="http://localhost/test_upload.php" method="post" enctype="multipart/form-data">
+        <input type="file" name="profile" />
+        <input type="submit" value="SUBMIT">
+      </form>
+
+      <!-- JavaScript 로 테그 만들기
+      <script>
+        document.write("</br><div style='display:inline' name='_50000_sum' align='right'>금액</div></br>");
+      </script>
+       JavaScript 로 테그 만들기 -->
+
+
+
+
+          <script type="text/javascript">
+
+              function OnclickFunc() {
+
+                  document.getElementsByName("aa")[0].innerHTML = "변경";
+                  var str = document.getElementsByName("aa")[0].innerHTML;
+                  //alert(str);
+
+              }
+
+              function CalcFocusOut(val) {
+                  var amount = document.getElementsByName("_50000_input");
+                  var changeValue = amount[0].value * val;
+                  document.getElementsByName("_50000_sum")[0].innerHTML = changeValue;
+                  var str = document.getElementsByName("_50000_sum")[0].innerHTML;
+              }
+
+
+          </script>
+
+
+
+
+
+
+
+
+<!-- TABLE
+          <div class="bs-docs-example">
+            <table class="table">
+              <thead>
+                <tr>
+                  <th>#</th>
+                  <th>First Name</th>
+                  <th>Last Name</th>
+                  <th>Username</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>1</td>
+                  <td>Mark</td>
+                  <td>Otto</td>
+                  <td>@mdo</td>
+                </tr>
+                <tr>
+                  <td>2</td>
+                  <td>Jacob</td>
+                  <td>Thornton</td>
+                  <td>@fat</td>
+                </tr>
+                <tr>
+                  <td>3</td>
+                  <td>Larry</td>
+                  <td>the Bird</td>
+                  <td>@twitter</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
+
+
+TABLE -->
+
+
+
+
+
+
+
+          <!-- Le javascript
+        ================================================== -->
+          <!-- Placed at the end of the document so the pages load faster -->
+          <script src="bootstrap/js/jquery.js"></script>
+          <script src="bootstrap/js/bootstrap-transition.js"></script>
+          <script src="bootstrap/js/bootstrap-alert.js"></script>
+          <script src="bootstrap/js/bootstrap-modal.js"></script>
+          <script src="bootstrap/js/bootstrap-dropdown.js"></script>
+          <script src="bootstrap/js/bootstrap-scrollspy.js"></script>
+          <script src="bootstrap/js/bootstrap-tab.js"></script>
+          <script src="bootstrap/js/bootstrap-tooltip.js"></script>
+          <script src="bootstrap/js/bootstrap-popover.js"></script>
+          <script src="bootstrap/js/bootstrap-button.js"></script>
+          <script src="bootstrap/js/bootstrap-collapse.js"></script>
+          <script src="bootstrap/js/bootstrap-carousel.js"></script>
+          <script src="bootstrap/js/bootstrap-typeahead.js"></script>
+
+</body>
+</html>
