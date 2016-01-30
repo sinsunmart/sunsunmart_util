@@ -1,5 +1,5 @@
 <?php
-      //echo "dlkfjsdljflsdkfj";
+      session_start();
 
       $name = $_POST['name'];
       $pw_fromUser = $_POST['pw'];
@@ -48,21 +48,36 @@
 
       $strCm = strcmp($pw_fromUser, $pw);
 
-      if(strcmp($name, '0001')==0)
+      if(strcmp($name, '0001')==0)  // 관리자 로그인
       {
-        // 주인장 로그인
-        echo '0001';
+        if($strCm == 0)
+        {
+          $_SESSION['is_mgr_login'] = true;
+          header('Location: ./manager.php');
+
+        }
+        else {
+          $_SESSION['is_mgr_login'] = false;
+          header('Location: ./index.html');
+        }
+
+        //echo '0001';
       }
-      else {
+      else
+      {    // 관리자 이외의 사람 로그인
         if($strCm == 0)
         {
           // 로그인처리
-          echo '1';
+          $_SESSION['is_casher_login'] = true;
+          header('Location: ./dayClose.php');
+          //echo '1';
         }
         else
         {
           // 비밀번호 틀림
-          echo '0';
+          $_SESSION['is_casher_login'] = false;
+          header('Location: ./index.html');
+          //echo '0';
         }
       }
 

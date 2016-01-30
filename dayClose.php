@@ -1,4 +1,10 @@
-
+<?php
+  session_start();
+  if( !isset($_SESSION['is_casher_login'] ))
+  {
+      header('Location: ./index.html');
+  }
+?>
 <!DOCTYPE html>
 <html lang="en"> <!--2016년1월30일 버전관리시작-->
   <head>
@@ -96,7 +102,6 @@
 
       }
 
-
     </style>
     <link href="bootstrap/css/bootstrap-responsive.css" rel="stylesheet">
     <!--자바스크립트소스외부파일    <script src="/static/lib/ckeditor/ckeditor.js"></script>  -->
@@ -152,14 +157,23 @@
                 <h1>신선마트</h1>
                 <h3>일일정산시스템</h3>
                 <h5>© Sinsun Corp</h5>
+                <?php
+                if($_SESSION['is_casher_login'] == true)
+                {
+                  echo "Casher";
+                }
+                ?>
+                님 환영합니다<br />
                 <h5><div name="put_id">casher ID</div></h5>
                 <p>날짜 : <input type="date" name="n_date" onfocusout="GetDate()"><br/></p>
 
                 <script>
+                /*
                 var temp=location.href.split("?");
                 var data=temp[1].split(":");
                 var g_CasherId=data[1];
                 g_CasherId = g_CasherId*1;
+
                 if(g_CasherId===2)
                 {
                   document.getElementsByName('put_id')[0].innerHTML = "캐셔: " + "임중민";
@@ -167,6 +181,8 @@
                 else {
                   alert("Wrong");
                 }
+                */
+
                 // thead
                 document.write('<thead><tr><th>현금계수</th><th>수량</th><th>금액</th></tr></thead>');
                 document.write('<tbody>');
@@ -285,6 +301,8 @@
          sum_CashCalc = _50000_sum + _10000_sum + _5000_sum + _1000_sum + _500_sum + _100_sum + _50_sum + _10_sum;
 
          document.getElementsByName('sum')[0].innerHTML = '합계금액 : ' + sum_CashCalc + ' 원';
+
+         return sum_CashCalc;
        }
 
        function AddSpendingList(v)  // 인자로 1이 들어오면 목록추가, 2가 들어오면 목록삭제
@@ -359,20 +377,24 @@
 
               // 지출금액 합계 표시하기
               document.getElementsByName('spendingMoneyValue')[0].innerHTML = sum_SpendingCalc;
+
+              return sum_SpendingCalc;
             }
             else
             {
 
               alert('숫자만 입력 가능합니다');
               event.returnValue = false;
-              return;
+              return 0;
             }
 
          }
+         else {
+           return sum_SpendingCalc;
+         }
        }
 
-       // 데이터 전송시 지출내역 텍스트값과 지출금액을 합해서 리턴해주는 함수
-       function GetSpendListText()
+       function GetSpendListText()   // 데이터 전송시 지출내역 텍스트값과 지출금액을 합해서 리턴해주는 함수
        {
           // name: spendingListTag_text + addingVal
           spendListText = " ";
@@ -408,34 +430,27 @@
 
        }
 
-       function GetSaledAmount()
+       function GetSaledAmount()    // 현금판매 구하는 함수
        {
-         /*
-         var sum_SpendingCalc = 0; // 지출내역 합계금액
-         var presentCash = 0;  // 현금시제
-         var saledCash = 0;    // 현금판매
-         var overAndShort = 0; // 과부족
-         var deposit = 0;      // 현금입금
-         */
          // 현금시제present_cash
          presentCash = (document.getElementsByName('present_cash')[0].value)*1;
-
-         //alert("val:"+val_present_cash);
-         //alert("spend:"+spend);
 
          // 현금판매
          saledCash = presentCash-sum_SpendingCalc; // 현금시제-지출소계
 
          document.getElementsByName('saledAmount')[0].innerHTML = saledCash*1;
+
+         return saledCash;
        }
 
-       function GetOverandShort()
+       function GetOverandShort()   // 과부족 구하는 함수
        {
          overAndShort = sum_CashCalc - saledCash; //현금판매-현금소계
          document.getElementsByName('n_overAndShort')[0].innerHTML = overAndShort*1;
+         return overAndShort;
        }
 
-       function GetCashDeposit()
+       function GetCashDeposit()   // 현금입금 구하는 함수
        {
          var bigCash = _50000_sum + _10000_sum;
          var deposit = (bigCash*1) - 100000;    // 10만원을 차감한 나머지 만원권 입금
@@ -444,71 +459,88 @@
          return deposit;
        }
 
-       function GetDate()
+       function GetDate()  // 날짜구하는 함수
        {
           var strDate = document.getElementsByName("n_date")[0].value;
-          var arr = strDate.split('-');
 
           g_Date = strDate;    // 날짜
 
-       }
-
-       function SendData_DB()
-       {
-         if (confirm("전송 하시겠습니까?"))
-         {
-           var form = document.createElement("form");
-           form.setAttribute("method", "POST");
-           form.setAttribute("action", "/sendData.php");
-
-           var obj = new Object();
-
-           obj["date"] = g_Date;
-           obj["_50000_sum"] = _50000_sum;
-           obj["_10000_sum"] = _10000_sum;
-           obj["_5000_sum"] = _5000_sum;
-           obj["_1000_sum"] = _1000_sum;
-           obj["_500_sum"] = _500_sum;
-           obj["_100_sum"] = _100_sum;
-           obj["_50_sum"] = _50_sum;
-           obj["_10_sum"] = _10_sum;
-
-           obj["sum_CashCalc"] = sum_CashCalc;
-           obj["presentCash"] = presentCash;
-           obj["spendList_t_n"] = GetSpendListText();
-           obj["sum_SpendingCalc"] = sum_SpendingCalc;
-           obj["saledCash"] = saledCash;
-           obj["overAndShort"] = overAndShort;
-           obj["deposit"] = GetCashDeposit();
-           obj["g_Memo"] = g_Memo;
-           obj["id"] = g_CasherId;
-
-           for(var key in obj)
-           {
-             var hiddenField = document.createElement("input");
-             hiddenField.setAttribute("type", "hidden");
-             hiddenField.setAttribute("name", key);
-             hiddenField.setAttribute("value", obj[key]);
-
-             form.appendChild(hiddenField);
-           }
-
-           document.body.appendChild(form);
-
-           form.submit();
-         }else
-         {
-
-         }
-
-
+          return g_Date;
        }
 
        function GetMemo()
        {
          //alert("memo:"+ document.getElementsByName('textarea')[0].value);
          g_Memo = document.getElementsByName('textarea')[0].value;
+         return g_Memo;
        }
+
+       function GetPresentCash()
+       {
+         var p_cash = document.getElementsByName('present_cash')[0].value;
+         return p_cash;
+       }
+
+       function SendData_DB()
+       {
+         if(GetDate()!= '')   // 날짜가 제대로 입력되어 있어야 가능
+         {
+           //alert("date:", g_Date);
+           if (confirm("전송 하시겠습니까?"))
+           {
+             var form = document.createElement("form");
+             form.setAttribute("method", "POST");
+             form.setAttribute("action", "/sendData.php");
+
+             var obj = new Object();
+
+
+             obj["date"] = GetDate();
+
+             obj["sum_CashCalc"] = CalcFocusOut();
+             obj["presentCash"] = GetPresentCash();
+             obj["spendList_t_n"] = GetSpendListText();
+             obj["sum_SpendingCalc"] = SpendListFocusOut();
+             obj["saledCash"] = GetSaledAmount();
+             obj["overAndShort"] = GetOverandShort();
+             obj["deposit"] = GetCashDeposit();
+             obj["g_Memo"] = GetMemo();
+
+
+             obj["_50000_sum"] = _50000_sum;
+             obj["_10000_sum"] = _10000_sum;
+             obj["_5000_sum"] = _5000_sum;
+             obj["_1000_sum"] = _1000_sum;
+             obj["_500_sum"] = _500_sum;
+             obj["_100_sum"] = _100_sum;
+             obj["_50_sum"] = _50_sum;
+             obj["_10_sum"] = _10_sum;
+
+             obj["id"] = g_CasherId;
+
+             for(var key in obj)
+             {
+               var hiddenField = document.createElement("input");
+               hiddenField.setAttribute("type", "hidden");
+               hiddenField.setAttribute("name", key);
+               hiddenField.setAttribute("value", obj[key]);
+
+               form.appendChild(hiddenField);
+             }
+
+             document.body.appendChild(form);
+
+             form.submit();
+           }else
+           {
+
+           }
+         }
+         else {
+           alert("날짜를 제대로 입력해 주세요");
+         }
+       }
+
 
        function Reset()
        {

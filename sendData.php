@@ -63,6 +63,7 @@
       if (mysql_num_rows($result) == 0)
       {
           echo "<script>alert(\"데이터 전송 완료!!\");</script>";
+          header('Location: ./dayClose.php');
           exit;
       }
 

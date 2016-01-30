@@ -77,7 +77,7 @@
           <div class='input_wrap'>
             <input type="text" class="input-block-level" id="id_text" placeholder="ID"></br>
             <input type="password" class="input-block-level" id="id_pwd" placeholder="PW" />
-            <input type="image" class="btn_login" src="img/btn_login.png" alt="로그인" onclick="LogIn()"/>
+            <input type="image" class="btn_login" src="img/btn_login.png" alt="로그인" onclick="Log_In()"/>
           </div>
 
         </div>
@@ -88,6 +88,38 @@
 
 
     <script type="text/javascript">
+
+      function Log_In()
+      {
+        var id = '';
+        var pwd = '';
+        id = document.querySelector('#id_text').value;
+        pwd = document.querySelector('#id_pwd').value;
+
+        var form = document.createElement("form");
+        form.setAttribute("method", "POST");
+        form.setAttribute("action", "/login.php");
+
+
+        var name_id = document.createElement("input");
+        name_id.setAttribute("type", "hidden");
+        name_id.setAttribute("name", 'name');
+        name_id.setAttribute("value", id);
+
+        form.appendChild(name_id);
+
+        var password = document.createElement("input");
+        password.setAttribute("type", "hidden");
+        password.setAttribute("name", 'pw');
+        password.setAttribute("value", pwd);
+
+        form.appendChild(password);
+
+        document.body.appendChild(form);
+
+        form.submit();
+
+      }
 
       function LogIn()
       {
@@ -106,12 +138,11 @@
 
 
         var data = '';
-        //data = 'name=0001&pw=0001';
-        //alert('data1:'+data);
         data += 'name='+ id;
         data += '&pw='+ pwd;
 
         //alert('data:'+data);
+
 
         xhr.onreadystatechange = function(){
         if(xhr.readyState === 4 && xhr.status === 200)
@@ -133,7 +164,8 @@
               var id=2;
               location.href="dayClose.php?"+name+":"+id;
             }
-            else {
+            else
+            {
               alert('아이디나 비밀번호가 맞지 않습니다. 확인하고 다시 시도해 주십시오');
             }
           }
@@ -142,6 +174,7 @@
             //alert("FAIL");
             //document.querySelector('#id_date').innerHTML = 'Error';
           }
+
         }
 
         xhr.send(data);
