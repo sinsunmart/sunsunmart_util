@@ -1,6 +1,6 @@
 
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en"> <!--2016년1월30일 버전관리시작-->
   <head>
     <meta charset="utf-8">
     <title>신선마트일일정산</title>
