@@ -1,8 +1,11 @@
 <?php
   session_start();
-  if( !isset($_SESSION['is_casher_login'] ))
+  if( isset($_SESSION['is_casher_login'] ))
   {
-      header('Location: ./index.html');
+      session_destroy();
+  }
+  else {
+    header('Location: ./index.html');  // 로그인 되어 있지 않으면 로그인 창으로 보내기
   }
 ?>
 <!DOCTYPE html>

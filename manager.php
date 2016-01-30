@@ -1,8 +1,12 @@
 <?php
 session_start();
-if( !isset($_SESSION['is_mgr_login'] ))
+if( isset($_SESSION['is_mgr_login'] ))
 {
-    header('Location: ./index.html');
+      // SESSION 유지 상태
+}
+else
+{
+  header('Location: ./index.html');
 }
 ?>
 
@@ -167,7 +171,7 @@ if( !isset($_SESSION['is_mgr_login'] ))
                 }
                 ?>
                 님 환영합니다<br />
-                
+
                 <h5>© Sinsun Corp</h5>
                 <h5><div id="id_CasherId">Casher ID</div></h5>
 
