@@ -1,8 +1,15 @@
 <?php
   session_start();
-  if( isset($_SESSION['is_casher_login'] ))
+  if($_SESSION['datasend_success'] == true)
   {
-      session_destroy();
+    session_destroy();
+    header('Location: ./index.html');
+  }
+
+  if( isset($_SESSION['is_2_login'] ))
+  //session_destroy();
+  {
+      //echo "<script>alert(\"casher LOgin!!\");</script>";
   }
   else {
     header('Location: ./index.html');  // 로그인 되어 있지 않으면 로그인 창으로 보내기
@@ -160,32 +167,18 @@
                 <h1>신선마트</h1>
                 <h3>일일정산시스템</h3>
                 <h5>© Sinsun Corp</h5>
+                Casher :
                 <?php
-                if($_SESSION['is_casher_login'] == true)
+                if($_SESSION['is_2_login'] == true)
                 {
-                  echo "Casher";
+                  echo "<script>document.write('임중민');</script>";
+                  echo "<script>g_CasherId = 2;</script>";
                 }
                 ?>
-                님 환영합니다<br />
-                <h5><div name="put_id">casher ID</div></h5>
+
                 <p>날짜 : <input type="date" name="n_date" onfocusout="GetDate()"><br/></p>
 
                 <script>
-                /*
-                var temp=location.href.split("?");
-                var data=temp[1].split(":");
-                var g_CasherId=data[1];
-                g_CasherId = g_CasherId*1;
-
-                if(g_CasherId===2)
-                {
-                  document.getElementsByName('put_id')[0].innerHTML = "캐셔: " + "임중민";
-                }
-                else {
-                  alert("Wrong");
-                }
-                */
-
                 // thead
                 document.write('<thead><tr><th>현금계수</th><th>수량</th><th>금액</th></tr></thead>');
                 document.write('<tbody>');
@@ -305,6 +298,14 @@
 
          document.getElementsByName('sum')[0].innerHTML = '합계금액 : ' + sum_CashCalc + ' 원';
 
+       }
+
+       function GetCashSum()
+       {
+         sum_CashCalc = 0;
+         sum_CashCalc = _50000_sum + _10000_sum + _5000_sum + _1000_sum + _500_sum + _100_sum + _50_sum + _10_sum;
+
+         document.getElementsByName('sum')[0].innerHTML = '합계금액 : ' + sum_CashCalc + ' 원';
          return sum_CashCalc;
        }
 
@@ -486,9 +487,10 @@
 
        function SendData_DB()
        {
+         alert("casherId:" + g_CasherId);
          if(GetDate()!= '')   // 날짜가 제대로 입력되어 있어야 가능
          {
-           //alert("date:", g_Date);
+
            if (confirm("전송 하시겠습니까?"))
            {
              var form = document.createElement("form");
@@ -497,18 +499,23 @@
 
              var obj = new Object();
 
-
              obj["date"] = GetDate();
 
-             obj["sum_CashCalc"] = CalcFocusOut();
-             obj["presentCash"] = GetPresentCash();
-             obj["spendList_t_n"] = GetSpendListText();
-             obj["sum_SpendingCalc"] = SpendListFocusOut();
-             obj["saledCash"] = GetSaledAmount();
-             obj["overAndShort"] = GetOverandShort();
-             obj["deposit"] = GetCashDeposit();
-             obj["g_Memo"] = GetMemo();
+             obj["sum_CashCalc"] = GetCashSum();
 
+             obj["presentCash"] = GetPresentCash();
+
+             obj["spendList_t_n"] = GetSpendListText();
+
+             obj["sum_SpendingCalc"] = SpendListFocusOut();
+
+             obj["saledCash"] = GetSaledAmount();
+
+             obj["overAndShort"] = GetOverandShort();
+
+             obj["deposit"] = GetCashDeposit();
+
+             obj["g_Memo"] = GetMemo();
 
              obj["_50000_sum"] = _50000_sum;
              obj["_10000_sum"] = _10000_sum;

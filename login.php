@@ -36,9 +36,13 @@
           exit;
       }
 
-      if (mysql_num_rows($result) == 0)
+      if (mysql_num_rows($result) == 0)  // user 를 못찾았을때
       {
-          //echo "<script>alert(\"데이터 전송 완료!!\");</script>";
+
+          $_SESSION['is_2_login'] = false;
+          header('Location: ./index.php');
+
+
           exit;
       }
 
@@ -50,40 +54,49 @@
 
       if(strcmp($name, '0001')==0)  // 관리자 로그인
       {
-        if($strCm == 0)
+        if($strCm == 0)  // 비밀번호가 맞으면
         {
-          $_SESSION['is_mgr_login'] = true;
+          //echo "--1--";
+          $_SESSION['is_1_login'] = true;
           header('Location: ./manager.php');
-
         }
-        else {
-          $_SESSION['is_mgr_login'] = false;
-          header('Location: ./index.html');
+        else {   // 비밀번호 틀림
+          //echo "--2--";
+          $_SESSION['is_1_login'] = false;
+          header('Location: ./index.php');
         }
-
-        //echo '0001';
       }
-      else
-      {    // 관리자 이외의 사람 로그인
-        if($strCm == 0)
+      else if(strcmp($name, '0002')==0)   // 캐셔 로그인
+      {
+        if($strCm == 0)  // 비밀번호가 맞으면
         {
+          //echo "--3--";
           // 로그인처리
-          $_SESSION['is_casher_login'] = true;
+          $_SESSION['is_2_login'] = true;
           header('Location: ./dayClose.php');
-          //echo '1';
         }
         else
         {
+          //echo "--4--";
           // 비밀번호 틀림
-          $_SESSION['is_casher_login'] = false;
-          header('Location: ./index.html');
-          //echo '0';
+          $_SESSION['is_2_login'] = false;
+          //header('Location: ./index.php');
         }
       }
-
-
-
+      else
+      {
+        echo "<script>alert(\"elseID 나 비밀번호를 확인해 주세요!!\");</script>";
+        header('Location: ./index.php');
+      }
 
       mysql_free_result($result);
-
 ?>
+
+<!DOCTYPE html>
+<html>
+<head>
+</head>
+<body>
+
+</body>
+</html>

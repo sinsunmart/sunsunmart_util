@@ -1,4 +1,6 @@
+<?php
 
+ ?>
 <!DOCTYPE html>
 <html lang="en">
   <head>
@@ -67,6 +69,7 @@
   </head>
 
   <body>
+
 
     <div class="container">
       <div id="login_form_header">

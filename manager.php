@@ -1,19 +1,17 @@
 <?php
 session_start();
-if( isset($_SESSION['is_mgr_login'] ))
+if( isset($_SESSION['is_1_login'] ))
 {
       // SESSION 유지 상태
 }
 else
 {
-  header('Location: ./index.html');
+  header('Location: ./index.php');
 }
 ?>
 
 <!DOCTYPE html>
 <html lang="en">
-
-
 
   <head>
     <meta charset="utf-8">
@@ -163,17 +161,9 @@ else
               <table class="table" id="table_cashCalc">
                 <h1>신선마트 Manager Page</h1>
                 <h3>일일정산시스템</h3>
-
-                <?php
-                if($_SESSION['is_mgr_login'] == true)
-                {
-                  echo "Boss";
-                }
-                ?>
-                님 환영합니다<br />
+                <h5>관리자님 환영합니다</h5>
 
                 <h5>© Sinsun Corp</h5>
-                <h5><div id="id_CasherId">Casher ID</div></h5>
 
                 <p>날짜 : <input type="date" id="id_date" onfocusout=""><br/></p>
                 <input type="button" onclick="ExcuteData()" value="Excute"/></br>
@@ -231,103 +221,106 @@ else
 
       function ExcuteData()
       {
-        //alert("date:"+ GetDate());
-        var xhr = new XMLHttpRequest();
-        xhr.open('POST', './getData_DB.php');
+        if(GetDate() == '')
+        {
+          alert('날짜를 바르게 입력하세요');
+        }
+        else
+        {
+          var xhr = new XMLHttpRequest();
+          xhr.open('POST', './getData_DB.php');
 
-        xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+          xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
 
-        var data = '';
-        var data = 'date='+ GetDate();
-        //var data = 'date='+ '2016-01-22';
+          var data = '';
+          var data = 'date='+ GetDate();
+          //var data = 'date='+ '2016-01-22';
 
-        //data += 'timezone='+document.getElementById('timezone').value;
-        //data += '&format='+document.getElementById('format').value;
-
-
-
-
-        xhr.onreadystatechange = function(){
-        if(xhr.readyState === 4 && xhr.status === 200)
-          {
-            //alert('message:' + xhr.responseText);
-            var arr_str = xhr.responseText;
-            var arr = arr_str.split('^');
+          //data += 'timezone='+document.getElementById('timezone').value;
+          //data += '&format='+document.getElementById('format').value;
 
 
-            document.querySelector('#id_date_show').innerHTML = arr[0]; //  날짜
 
 
-            even = 50000;
-            odd = 10000;
-            even = even*1;
-            odd = odd*1;
-            var each = 0;
-
-            // 동전계수
-            for(var i=1;i<9;i++)
+          xhr.onreadystatechange = function(){
+          if(xhr.readyState === 4 && xhr.status === 200)
             {
-              if(i%2!==0)
+              //alert('message:' + xhr.responseText);
+              var arr_str = xhr.responseText;
+              var arr = arr_str.split('^');
+
+
+              document.querySelector('#id_date_show').innerHTML = arr[0]; //  날짜
+
+
+              even = 50000;
+              odd = 10000;
+              even = even*1;
+              odd = odd*1;
+              var each = 0;
+
+              // 동전계수
+              for(var i=1;i<9;i++)
               {
-                document.getElementById('id_'+even+'_td_sum').innerHTML = arr[i];
-                each = arr[i]/even;
-                document.getElementById('id_'+even+'_td_amount').innerHTML = each;
-                even = even/10;
-                each = 0;
+                if(i%2!==0)
+                {
+                  document.getElementById('id_'+even+'_td_sum').innerHTML = arr[i];
+                  each = arr[i]/even;
+                  document.getElementById('id_'+even+'_td_amount').innerHTML = each;
+                  even = even/10;
+                  each = 0;
+                }
+                else
+                {
+                  document.getElementById('id_'+odd+'_td_sum').innerHTML = arr[i];
+                  each = arr[i]/odd;
+                  document.getElementById('id_'+odd+'_td_amount').innerHTML = each;
+                  odd = odd/10;
+                  each = 0;
+                }
               }
-              else
+
+              document.getElementById('id_cashSum').innerHTML = arr[9];  // 현금소계
+              document.getElementById('id_presentCash').innerHTML = arr[10];  // 현금시제
+
+              var list_spend = '';
+              var list = arr[11].split(',');
+
+              for( var l=0;l<list.length;l++)
               {
-                document.getElementById('id_'+odd+'_td_sum').innerHTML = arr[i];
-                each = arr[i]/odd;
-                document.getElementById('id_'+odd+'_td_amount').innerHTML = each;
-                odd = odd/10;
-                each = 0;
+                list_spend += list[l] + '</br>';
               }
+
+              document.getElementById('id_spendList').innerHTML = list_spend;  // 현금지출내역리스트
+
+              document.getElementById('id_cashSpendSum').innerHTML = arr[12];  // 현금지출합계금액
+
+              document.getElementById('id_cashSaled').innerHTML = arr[13];  // 현금판매
+
+              document.getElementById('id_overandshort').innerHTML = arr[14];  // 과부족
+
+              document.getElementById('id_deposit').innerHTML = arr[15];  // 현금입금
+
+              document.getElementById('id_memo').innerHTML = arr[16];  // 메모
+
+              if(arr[17] == 2)
+              {
+                document.getElementById('id_CasherId').innerHTML = "Casher: "+ "임중민";  // 캐셔아이디
+              }
+              else {
+
+              }
+
             }
-
-            document.getElementById('id_cashSum').innerHTML = arr[9];  // 현금소계
-            document.getElementById('id_presentCash').innerHTML = arr[10];  // 현금시제
-
-            var list_spend = '';
-            var list = arr[11].split(',');
-
-            for( var l=0;l<list.length;l++)
+            else
             {
-              list_spend += list[l] + '</br>';
+              //document.querySelector('#id_date').innerHTML = 'Error';
             }
-
-            document.getElementById('id_spendList').innerHTML = list_spend;  // 현금지출내역리스트
-
-            document.getElementById('id_cashSpendSum').innerHTML = arr[12];  // 현금지출합계금액
-
-            document.getElementById('id_cashSaled').innerHTML = arr[13];  // 현금판매
-
-            document.getElementById('id_overandshort').innerHTML = arr[14];  // 과부족
-
-            document.getElementById('id_deposit').innerHTML = arr[15];  // 현금입금
-
-            document.getElementById('id_memo').innerHTML = arr[16];  // 메모
-
-            if(arr[17] == 2)
-            {
-              document.getElementById('id_CasherId').innerHTML = "Casher: "+ "임중민";  // 캐셔아이디
-            }
-            else {
-
-            }
-
-
-
-
-
           }
-          else
-          {
-            //document.querySelector('#id_date').innerHTML = 'Error';
-          }
+
+          xhr.send(data);
         }
 
-        xhr.send(data);
       }
 
       function GetSpendingList(str)

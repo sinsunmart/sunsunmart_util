@@ -1,13 +1,6 @@
-<!DOCTYPE html>
-<html>
-<head>
-</head>
-<body>
 
-</body>
-</html>
 <?php
-
+      session_start();
 
       $date = $_POST['date'];
       $_50000_sum = $_POST['_50000_sum'];
@@ -63,6 +56,7 @@
       if (mysql_num_rows($result) == 0)
       {
           echo "<script>alert(\"데이터 전송 완료!!\");</script>";
+          $_SESSION['datasend_success'] = true;
           header('Location: ./dayClose.php');
           exit;
       }
@@ -80,3 +74,12 @@
       mysql_free_result($result);
 
 ?>
+
+<!DOCTYPE html>
+<html>
+<head>
+</head>
+<body>
+
+</body>
+</html>
