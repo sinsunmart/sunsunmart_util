@@ -55,10 +55,13 @@
 
       if (mysql_num_rows($result) == 0)
       {
-          echo "<script>alert(\"데이터 전송 완료!!\");</script>";
-          $_SESSION['datasend_success'] = true;
+          echo 'ok';
+
           header('Location: ./dayClose.php');
           exit;
+      }
+      else {
+        echo 'fail';
       }
 
       // While a row of data exists, put that row in $row as an associative array

@@ -1,10 +1,5 @@
 <?php
   session_start();
-  if($_SESSION['datasend_success'] == true)
-  {
-    session_destroy();
-    header('Location: ./index.html');
-  }
 
   if( isset($_SESSION['is_2_login'] ))
   //session_destroy();
@@ -12,7 +7,7 @@
       //echo "<script>alert(\"casher LOgin!!\");</script>";
   }
   else {
-    header('Location: ./index.html');  // 로그인 되어 있지 않으면 로그인 창으로 보내기
+    //header('Location: ./index.php');  // 로그인 되어 있지 않으면 로그인 창으로 보내기
   }
 ?>
 <!DOCTYPE html>
@@ -34,8 +29,7 @@
       }
 
       .form-signin {
-
-        max-width: 600px;
+        max-width: 700px;
         padding: 19px 29px 29px;
 
         background-color: #C3C1C1;
@@ -97,6 +91,7 @@
       }
 
       .table{
+
         border-top:  2px solid #686161;
         border-bottom: :  2px solid #686161;
         -webkit-border-radius: 5px;
@@ -108,7 +103,7 @@
       }
 
       .textarea{
-        width:500px;
+        max-width: :400px;
 
       }
 
@@ -125,7 +120,7 @@
       var g_CasherId;
       var g_Date;             // 날짜
       //화폐단위별 합계금액 변수
-      var _50000_sum = 23;
+      var _50000_sum = 0;
       var _10000_sum = 0;
       var _5000_sum = 0;
       var _1000_sum = 0;
@@ -178,66 +173,55 @@
 
                 <p>날짜 : <input type="date" name="n_date" onfocusout="GetDate()"><br/></p>
 
-                <script>
-                // thead
-                document.write('<thead><tr><th>현금계수</th><th>수량</th><th>금액</th></tr></thead>');
-                document.write('<tbody>');
+                <thead><tr><th>현금계수</th><th>수량</th><th>금액</th></tr></thead>
+                <tbody>
 
-                // 동전계수
-                document.write('<tr><td>5만원권</td><td><input type="text" class="input-block-level" name="_50000_input" placeholder="입력" onfocusout="CalcFocusOut(50000)"></td><td><div name="_50000_sum">금액</div></td></tr>');
-                document.write('<tr><td>만원권</td><td><input type="text" class="input-block-level" name="_10000_input" placeholder="입력" onfocusout="CalcFocusOut(10000)"></td><td><div name="_10000_sum">금액</div></td></tr>');
-                document.write('<tr><td>5천원권</td><td><input type="text" class="input-block-level" name="_5000_input" placeholder="입력" onfocusout="CalcFocusOut(5000)"></td><td><div name="_5000_sum">금액</div></td></tr>');
-                document.write('<tr><td>천원권</td><td><input type="text" class="input-block-level" name="_1000_input" placeholder="입력" onfocusout="CalcFocusOut(1000)"></td><td><div name="_1000_sum">금액</div></td></tr>');
-                document.write('<tr><td>5백원권</td><td><input type="text" class="input-block-level" name="_500_input" placeholder="입력" onfocusout="CalcFocusOut(500)"></td><td><div name="_500_sum">금액</div></td></tr>');
-                document.write('<tr><td>백원권</td><td><input type="text" class="input-block-level" name="_100_input" placeholder="입력" onfocusout="CalcFocusOut(100)"></td><td><div name="_100_sum">금액</div></td></tr>');
-                document.write('<tr><td>5십원권</td><td><input type="text" class="input-block-level" name="_50_input" placeholder="입력" onfocusout="CalcFocusOut(50)"></td><td><div name="_50_sum">금액</div></td></tr>');
-                document.write('<tr><td>십원권</td><td><input type="text" class="input-block-level" name="_10_input" placeholder="입력" onfocusout="CalcFocusOut(10)"></td><td><div name="_10_sum">금액</div></td></tr>');
-
-                document.write('<tr><td>현금소계</td><td><div name="sum" id="won_unit">합계금액</div></td><td></td></tr></br></br></br></br>');
+                  <tr><td>5만원권</td><td><input type="text" class="input-block-level" name="_50000_input" placeholder="입력" onfocusout="CalcFocusOut(50000)"></td><td><div name="_50000_sum">금액</div></td></tr>
+                  <tr><td>만원권</td><td><input type="text" class="input-block-level" name="_10000_input" placeholder="입력" onfocusout="CalcFocusOut(10000)"></td><td><div name="_10000_sum">금액</div></td></tr>
+                  <tr><td>5천원권</td><td><input type="text" class="input-block-level" name="_5000_input" placeholder="입력" onfocusout="CalcFocusOut(5000)"></td><td><div name="_5000_sum">금액</div></td></tr>
+                  <tr><td>천원권</td><td><input type="text" class="input-block-level" name="_1000_input" placeholder="입력" onfocusout="CalcFocusOut(1000)"></td><td><div name="_1000_sum">금액</div></td></tr>
+                  <tr><td>5백원권</td><td><input type="text" class="input-block-level" name="_500_input" placeholder="입력" onfocusout="CalcFocusOut(500)"></td><td><div name="_500_sum">금액</div></td></tr>
+                  <tr><td>백원권</td><td><input type="text" class="input-block-level" name="_100_input" placeholder="입력" onfocusout="CalcFocusOut(100)"></td><td><div name="_100_sum">금액</div></td></tr>
+                  <tr><td>5십원권</td><td><input type="text" class="input-block-level" name="_50_input" placeholder="입력" onfocusout="CalcFocusOut(50)"></td><td><div name="_50_sum">금액</div></td></tr>
+                  <tr><td>십원권</td><td><input type="text" class="input-block-level" name="_10_input" placeholder="입력" onfocusout="CalcFocusOut(10)"></td><td><div name="_10_sum">금액</div></td></tr>
 
 
-
-                document.write('</tbody>');
-                </script>
+                <tr><td>현금소계</td><td><div name="sum" id="won_unit">합계금액</div></td><td></td></tr></br></br></br></br>
+                </tbody>
               </table>
 
               <table class="table" id="table_presentCash">
-                <script>
-                // 현금시제
-                document.write('<tr><td>현금시제</td><td><input type="text" name="present_cash" placeholder="입력"></td></tr>');
-                </script>
+
+                <tr><td>현금시제</td><td><input class="input-block-level" type="text" name="present_cash" placeholder="입력"></td></tr>
+
               </table>
 
               <!-- 현금지출내역 리스트 테이블 -->
               <table class="table" id="spendingListTable">
+
+                <thead><tr><th>현금지출내역</th><th>지출금액</th></tr></thead>
+                <tbody>
+
+                  <tr><td>지출소계</td><td><div class="input-block-level" id="won_unit" name="spendingMoneyValue">합계금액</div></td><td></td></tr>
+                </tbody>
                 <script>
-                // thead
-                document.write('<thead><tr><th>현금지출내역</th><th>지출금액</th></tr></thead>');
-                document.write('<tbody>');
-
-                //지출소계
-                document.write('<tr><td>지출소계</td><td><div id="won_unit" name="spendingMoneyValue">합계금액</div></td><td></td></tr>');
-                document.write('</tbody>');
-
                 // 현금지출내역 리스트시작
-                //document.write('<tr id="spendingListTable'+addingVal+'"><td><input type="text" name="spendingListTag_text'+addingVal+'"></td><td><input type="text" name="spendingListTag_money'+addingVal+'"></td><td><div name="spendingMoneyValue'+addingVal+'">금액</div></td></tr>');
-                document.write('<tr id="spendingListTable'+addingVal+'"><td><input type="text" name="spendingListTag_text'+addingVal+'"></td><td><input type="text" name="spendingListTag_money'+addingVal+'" onfocusout="SpendListFocusOut(addingVal)"></td></tr>');
+                document.write('<tr id="spendingListTable'+addingVal+'"><td><input class="input-block-level" type="text" id="id_spendingListTag_text'+addingVal+'"" name="spendingListTag_text'+addingVal+'"></td><td><input class="input-block-level" type="text" name="spendingListTag_money'+addingVal+'" onfocusout="SpendListFocusOut(addingVal)"></td></tr>');
 
                 // 목록추가, 목록삭제버튼
                 // onclick 함수 인자로 1을주면 목록추가, 2을 주면 목록삭제
                 document.write('<tr><td><input type="button" name="add_btn" value="목록추가" onclick="AddSpendingList(1)"></td><td><input type="button" name="del_btn"  value="목록삭제" onclick="AddSpendingList(2)"></td></tr>');  // onclick 함수 인자로 1을 주면 목록추가
-
 
                 </script>
 
               </table>
 
               <table class="table" id="table_calc">
-                <tr><td><div>현금판매(현금시제-지출소계) : <input type="button" onclick="GetSaledAmount()" value="Get"></div></td><td><div name="saledAmount">현금판매</div></td></tr>
-                <tr><td><div>과부족(현금판매-현금소계) : <input type="button" onclick="GetOverandShort()" value="Get"></div></td><td><div name="n_overAndShort">과부족</div></td></tr>
-                <tr><td><div>현금입금 : <input type="button" onclick="GetCashDeposit()" value="Get"></div></td><td><div name="cashDeposit">현금입금</div></td></tr>
-                <tr><td>메모:<input type"textarea" name="textarea" onkeyup="resize(this)" onfocusout="GetMemo()"></td></tr>
-                <tr><td><input type="button" name="" onclick="PageReload()" value="전체초기화"></td><td><input type="button" onclick="SendData_DB()" name="" value="전송"></td></tr>
+                <tr><td><div>현금판매(현금시제-지출소계) : <input class="input-block-level" type="button" onclick="GetSaledAmount()" value="Get"></div></td><td><div name="saledAmount">현금판매</div></td></tr>
+                <tr><td><div>과부족(현금판매-현금소계) : <input class="input-block-level" type="button" onclick="GetOverandShort()" value="Get"></div></td><td><div name="n_overAndShort">과부족</div></td></tr>
+                <tr><td><div>현금입금 : <input class="input-block-level" type="button" onclick="GetCashDeposit()" value="Get"></div></td><td><div name="cashDeposit">현금입금</div></td></tr>
+                <tr><td>메모:<input class="input-block-level" type"textarea" name="textarea" onkeyup="resize(this)" onfocusout="GetMemo()"></td></tr>
+                <tr><td><input class="input-block-level" type="button" name="" onclick="PageReload()" value="전체초기화"></td><td><input class="input-block-level" type="button" onclick="SendData_DB()" name="" value="전송"></td></tr>
 
               </table>
 
@@ -487,12 +471,11 @@
 
        function SendData_DB()
        {
-         alert("casherId:" + g_CasherId);
          if(GetDate()!= '')   // 날짜가 제대로 입력되어 있어야 가능
          {
-
            if (confirm("전송 하시겠습니까?"))
            {
+
              var form = document.createElement("form");
              form.setAttribute("method", "POST");
              form.setAttribute("action", "/sendData.php");
@@ -540,6 +523,7 @@
 
              document.body.appendChild(form);
 
+             Send_Req_Data();
              form.submit();
            }else
            {
@@ -551,61 +535,44 @@
          }
        }
 
+       function Send_Req_Data()
+       {
+
+         var xhr = new XMLHttpRequest();
+
+         xhr.open('POST', './login.php');
+
+         xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+
+
+         var data = '1';
+         //data += 'name='+ id;
+
+         //alert('data:'+data);
+
+
+         xhr.onreadystatechange = function(){
+         if(xhr.readyState === 4 && xhr.status === 200)
+           {
+             var arr_str = xhr.responseText;
+
+             if(arr_str = 'ok')
+             {
+               alert("데이터 전송 완료");               
+             }
+           }
+           else
+           {
+             //alert("데이터 전송 실패");
+           }
+
+         }
+
+         xhr.send(data);
+       }
 
        function Reset()
        {
-
-         g_Date  = "2016-04-21";             // 날짜
-         document.getElementsByName("n_date")[0].value = g_Date;
-         //화폐단위별 합계금액 변수
-         _50000_sum = 100000;
-         _10000_sum = 250000;
-         _5000_sum = 120000;
-         _1000_sum = 45000;
-         _500_sum = 34000;
-         _100_sum = 3400;
-         _50_sum = 4300;
-         _10_sum = 450;
-
-         // 화폐단위별 합계금액
-         document.getElementsByName('_50000_sum')[0].innerHTML = _50000_sum +' 원';
-         document.getElementsByName('_10000_sum')[0].innerHTML = _10000_sum + ' 원';
-         document.getElementsByName('_5000_sum')[0].innerHTML = _5000_sum + ' 원';
-         document.getElementsByName('_1000_sum')[0].innerHTML = _1000_sum + ' 원';
-         document.getElementsByName('_500_sum')[0].innerHTML = _500_sum + ' 원';
-         document.getElementsByName('_100_sum')[0].innerHTML = _100_sum + ' 원';
-         document.getElementsByName('_50_sum')[0].innerHTML = _50_sum + ' 원';
-         document.getElementsByName('_10_sum')[0].innerHTML = _10_sum + ' 원';
-
-         // 합계
-         sum_CashCalc = 0;
-         sum_CashCalc = _50000_sum + _10000_sum + _5000_sum + _1000_sum + _500_sum + _100_sum + _50_sum + _10_sum;
-
-         document.getElementsByName('sum')[0].innerHTML = '합계금액 : ' + sum_CashCalc + ' 원';
-
-         // 현금시제
-         presentCash = 525800;  // 현금시제
-         document.getElementsByName('present_cash')[0].value = presentCash;
-
-
-         spendListText;  // 지출내역 텍스트값
-         spendList_t_n;  // 지출내역 텍스트+숫자 합친값
-         sum_SpendingCalc = 0;// 지출내역 합계금액
-
-
-         saledCash = 0;    // 현금판매
-         overAndShort = 0; // 과부족
-         deposit = 0;      // 현금입금
-
-         sum_CashCalc = 0;   // 동전계수합계 현금소계
-
-         presentCash = 0;  // 현금시제
-         sum_SpendingCalc = 0;// 지출내역 합계금액
-
-         saledCash = 0;    // 현금판매
-         overAndShort = 0; // 과부족
-
-         addingVal = 1;
        }
 
        function resize(obj)

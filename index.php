@@ -1,5 +1,5 @@
 <?php
-
+  //header('Location: ./dayClose.php');
  ?>
 <!DOCTYPE html>
 <html lang="en">
