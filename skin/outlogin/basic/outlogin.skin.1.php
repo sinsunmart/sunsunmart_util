@@ -2,7 +2,6 @@
 if(defined('DEBUG_MODE_PROCEDURE'))
 {
     print_Log('proc_Log', 'outlogin.skin.1.php_start');
-    print_Log('outlogin_skin_url : ', $outlogin_skin_url);
 }
 
 // add_stylesheet('css 구문', 출력순서); 숫자가 작을 수록 먼저 출력됨
@@ -68,8 +67,6 @@ $(function() {
 
 function fhead_submit(f)
 {
-    // login_check.php 로 데이터 전송
-    //console.log('submit : '+ "<?php echo $outlogin_action_url; ?>");
     return true;
 }
 </script>

@@ -136,7 +136,7 @@ include_once(G5_LIB_PATH.'/popular.lib.php');
             {
             ?>
             <li class="gnb_1dli" style="z-index:<?php echo $gnb_zindex--; ?>">
-                <a href="<?php echo $row['me_link']; ?>" target="_<?php echo $row['me_target']; ?>" class="gnb_1da"><?php echo $row['me_name'] ?></a>
+                <a href="<?php echo $row['me_link']; ?>"  class="gnb_1da"><?php echo $row['me_name'] ?></a>
                 <?php
                 $sql2 = " select *
                             from {$g5['menu_table']}
@@ -153,7 +153,7 @@ include_once(G5_LIB_PATH.'/popular.lib.php');
                     if($k == 0)
                         echo '<ul class="gnb_2dul">'.PHP_EOL;
                 ?>
-                    <li class="gnb_2dli"><a href="<?php echo $row2['me_link']; ?>" target="_<?php echo $row2['me_target']; ?>" class="gnb_2da"><?php echo $row2['me_name'] ?></a></li>
+                    <li class="gnb_2dli"><a href="<?php echo $row2['me_link']; ?>" target="_<?php// echo $row2['me_target']; ?>" class="gnb_2da"><?php echo $row2['me_name'] ?></a></li>
                 <?php
                 }
 

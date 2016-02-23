@@ -78,7 +78,7 @@ include_once(G5_LIB_PATH.'/popular.lib.php');
             for($i=0; $row=sql_fetch_array($result); $i++) {
             ?>
                 <li class="gnb_1dli">
-                    <a href="<?php echo G5_SINSUN_URL; ?>/dayclose_client.php"  class="gnb_1da"><?php echo $row['me_name'] ?></a>
+                    <a href="<?php echo $row['me_link']; ?>"  class="gnb_1da"><?php echo $row['me_name'] ?></a>
                     <?php
 
                     $sql2 = " select *

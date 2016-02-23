@@ -216,7 +216,6 @@ ini_set("session.cookie_domain", G5_COOKIE_DOMAIN);
 @session_start();
 //==============================================================================
 
-
 //==============================================================================
 // 공용 변수
 //------------------------------------------------------------------------------
@@ -233,7 +232,10 @@ else
 
 // 4.00.03 : [보안관련] PHPSESSID 가 틀리면 로그아웃한다.
 if (isset($_REQUEST['PHPSESSID']) && $_REQUEST['PHPSESSID'] != session_id())
-    goto_url(G5_BBS_URL.'/logout.php');
+    {
+        echo('<script>console.log("common2:'.$_SESSION["ss_mb_id"].' ");</script>');
+        goto_url(G5_BBS_URL.'/logout.php');
+    }
 
 // QUERY_STRING
 $qstr = '';
@@ -350,9 +352,10 @@ if (isset($_REQUEST['gr_id'])) {
 
 
 // 자동로그인 부분에서 첫로그인에 포인트 부여하던것을 로그인중일때로 변경하면서 코드도 대폭 수정하였습니다.
-echo('<script>console.log("session:'.$_SESSION["ss_mb_id"].' ");</script>');
+
 if ($_SESSION['ss_mb_id']) 
 { // 로그인중이라면
+    
     $member = get_member($_SESSION['ss_mb_id']);
 
     // 차단된 회원이면 ss_mb_id 초기화
@@ -374,6 +377,7 @@ if ($_SESSION['ss_mb_id'])
 } else {
     // 자동로그인 ---------------------------------------
     // 회원아이디가 쿠키에 저장되어 있다면 (3.27)
+    
     if ($tmp_mb_id = get_cookie('ck_mb_id')) {
 
         $tmp_mb_id = substr(preg_replace("/[^a-zA-Z0-9_]*/", "", $tmp_mb_id), 0, 20);
@@ -482,7 +486,6 @@ if ($is_admin != 'super') {
             die ("접근 불가합니다.");
     }
 }
-
 
 // 테마경로
 if(defined('_THEME_PREVIEW_') && _THEME_PREVIEW_ === true)

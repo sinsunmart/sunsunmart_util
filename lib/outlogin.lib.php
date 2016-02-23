@@ -73,9 +73,6 @@ function outlogin($skin_dir='basic')
 
     ob_end_clean(); 
 
-
-
-
     return $content;
 }
 

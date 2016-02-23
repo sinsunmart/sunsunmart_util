@@ -1,8 +1,7 @@
 @charset "utf-8";
-/* SIR 지운아빠 */
 
 /* 아웃로그인 */
-.ol {position:relative;margin:0 0 10px;padding:0 5px 5px;border-bottom:1px solid #e7f1ed}
+.ol {position:relative;margin:0 0 10px;padding:0 5px 5px;border-bottom:1px solid #e7f1ed;}
 .ol h2 {width:0;height:0;overflow:hidden}
 
 .ol a.btn_admin {display:inline-block;margin:0 0 5px;padding:0 10px;border:1px solid #e8180c;background:#e8180c;color:#fff;text-decoration:none;line-height:2em;vertical-align:middle} /* 관리자 전용 버튼 */

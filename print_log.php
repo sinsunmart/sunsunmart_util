@@ -1,6 +1,6 @@
 <?php
 
-	define('DEBUG_MODE_PROCEDURE', true);
+	//define('DEBUG_MODE_PROCEDURE', true);
 
 	//echo("<script>console.log('proc_Log : print_lo_included.php');</script>");
 

@@ -14,8 +14,6 @@ if (!$mb_id || !$mb_password)
 $mb = get_member($mb_id);
 
 
-//echo("<script>console.log('Log : login_check2.php');</script>");
-
 // 가입된 회원이 아니다. 비밀번호가 틀리다. 라는 메세지를 따로 보여주지 않는 이유는
 // 회원아이디를 입력해 보고 맞으면 또 비밀번호를 입력해보는 경우를 방지하기 위해서입니다.
 // 불법사용자의 경우 회원아이디가 틀린지, 비밀번호가 틀린지를 알기까지는 많은 시간이 소요되기 때문입니다.
@@ -25,10 +23,6 @@ if (!$mb['mb_id'] || !check_password($mb_password, $mb['mb_password']))
         alert( 'mb:'.$mb['mb_id'].'checkpaww:');
     alert('가입된 회원아이디가 아니거나 비밀번호가 틀립니다.\\n비밀번호는 대소문자를 구분합니다.');
 }
-
-
-//echo("<script>console.log('Log : login_check3.php');</script>");
-
 
 
 // 차단된 아이디인가?
@@ -51,9 +45,6 @@ if ($config['cf_use_email_certify'] && !preg_match("/[1-9]/", $mb['mb_email_cert
 }
 
 
-//echo("<script>console.log('Log : login_check4.php');</script>");
-
-
 @include_once($member_skin_path.'/login_check.skin.php');
 
 // 회원아이디 세션 생성
@@ -71,9 +62,6 @@ if($config['cf_use_point'])
     sql_query($sql);
 }
 
-
-//echo("<script>console.log('Log : login_check5.php');</script>");
-
 // 3.26
 // 아이디 쿠키에 한달간 저장
 if ($auto_login) 
@@ -90,8 +78,6 @@ if ($auto_login)
     set_cookie('ck_auto', '', 0);
 }
 
-
-//echo("<script>console.log('Log : login_check6.php');</script>");
 
 if ($url) 
 {
@@ -113,19 +99,12 @@ if ($url)
             $split = "&amp;";
         }        
     }
-
- 
 } else  
 {    
-    //alert('else');
     $link = G5_URL;
 }
-//alert($link);
 
-echo('<script>console.log("session:'.$_SESSION["ss_mb_id"].' ");</script>');
-//alert('session');
-//$_SESSION['ss_mb_id']
-
+echo('<script>console.log("ss_mb_id_logincheck:'.$_SESSION["ss_mb_id"].' ");</script>');
 
 goto_url($link);   // id, pw 맞으면 다시 index.php로
 echo("<script>console.log('Log : login_check.php_end');</script>");
