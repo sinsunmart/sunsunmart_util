@@ -66,6 +66,9 @@ include_once(G5_MOBILE_PATH.'/head.php');
 
       var addingVal = 1;
 
+      var g_Time_Start = 0;
+      var g_Time_end = 0;
+
     </script>
 
     <div class="container-fluid">
@@ -86,6 +89,40 @@ include_once(G5_MOBILE_PATH.'/head.php');
                
 
                 <p>날짜 : <input type="date" name="n_date" onfocusout="GetDate()"></p>
+
+                <!--  근무시간 선택 -->
+                <p>근무시작시간 : <input type="time" id="id_time_start"></p>
+                <p>근무종료시간 : <input type="time" id="id_time_end" ></p>
+                <script>
+                  var time_event_start = document.getElementById('id_time_start');
+
+                    time_event_start.addEventListener('focusout', function(event){
+                      g_Time_Start = event.target.value + ':00';
+
+                      var t = g_Time_Start.split(':');
+                      t[0]*=1;t[1]*=1;t[2]*=1;
+                      if(t[1]%10!=0)
+                      {
+                        alert('분은 10분단위로 입력하세요!');
+                      }
+                        
+                      
+                    });
+
+                  var time_event_end = document.getElementById('id_time_end');
+                  time_event_end.addEventListener('focusout', function(event){
+                    g_Time_end = event.target.value + ':00';
+
+                    var t = g_Time_Start.split(':');
+                    t[0]*=1;t[1]*=1;t[2]*=1;
+                    if(t[1]%10!=0)
+                    {
+                      alert('분은 10분단위로 입력하세요!');
+                    }
+                      
+                  });
+                </script>
+                <!--  근무시간 선택 끝 -->
 
                 <thead><tr><th>현금계수</th><th>수량</th><th>금액</th></tr></thead>
                 <tbody>
@@ -398,6 +435,10 @@ include_once(G5_MOBILE_PATH.'/head.php');
 
              obj["date"] = GetDate();
 
+             obj["time_start"] = g_Time_Start;
+
+             obj["time_end"] = g_Time_end;
+
              obj["sum_CashCalc"] = GetCashSum();
 
              obj["presentCash"] = GetPresentCash();
@@ -499,6 +540,22 @@ include_once(G5_MOBILE_PATH.'/head.php');
        {
          location.reload(true);
        }
+
+       function chkTime(obj)   // 시간입력이 올바른가 검사하는 함수
+       { 
+          var input = obj.value.replace(/:/g,""); 
+          var inputHours = input.substr(0,2); 
+          var inputMinutes = input.substr(2,2); 
+          var inputSeconds = input.substr(4,2); 
+          var resultTime = new Date(0,0,0, inputHours, inputMinutes, inputSeconds); 
+          if ( resultTime.getHours() != inputHours || 
+          resultTime.getMinutes() != inputMinutes || 
+          resultTime.getSeconds() != inputSeconds) { 
+          obj.value = ""; 
+          } else { 
+          obj.value = inputHours + ":" + inputMinutes + ":" + inputSeconds; 
+          } 
+        } 
 
     </script>
 
