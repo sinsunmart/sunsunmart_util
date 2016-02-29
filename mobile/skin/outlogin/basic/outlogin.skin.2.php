@@ -14,6 +14,7 @@ add_stylesheet('<link rel="stylesheet" href="'.$outlogin_skin_url.'/style.css">'
         <h2>나의 회원정보</h2>
         <strong><?php echo $nick ?>님</strong>
         <?php if ($is_admin == 'super' || $is_auth) { ?><a href="<?php echo G5_SINSUN_URL ?>/manager.php" class="btn_admin">일마감 보기</a><?php } ?>
+        <?php if ($is_admin == 'super' || $is_auth) { ?><a href="<?php echo G5_SINSUN_URL ?>/sattlement.php" class="btn_admin">결제관리</a><?php } ?>
         <?php if ($is_admin == 'super' || $is_auth) { ?><a href="<?php echo G5_ADMIN_URL ?>" class="btn_admin">관리자 모드</a><?php } ?>
     </header>
     <ul id="ol_after_private">

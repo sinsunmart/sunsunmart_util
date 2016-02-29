@@ -80,7 +80,7 @@ include_once(G5_MOBILE_PATH.'/head.php');
       -->
 
         <div class="span12">
-          <form class="form-signin" id="form_table" action="http://localhost/test.php" method="POST">
+          <form class="form-signin" id="form_table" action="" method="POST">
             <div class="bs-docs-example">
               <table class="table">
                 

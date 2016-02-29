@@ -37,10 +37,10 @@ a:hover, a:focus, a:active {color:#000;text-decoration:underline}
 #logo {padding:15px 10px}
 
 #gnb_open {position:absolute;top:45px;right:60px;padding:0 10px;height:2.6em;border:0;background:#333;color:#fff;font-size:1em;letter-spacing:-0.1em}
-#gnb {display:block;background:#282828; height: 100px;}
+#gnb {display:block;background:#282828; }
 #gnb a {display:block;color:#efefef}
 .gnb_1da {padding:10px;border-top:1px solid #191919}
-.gnb_1dli {height: 100px;font-size:30; max-width:180; }
+.gnb_1dli {font-size:30;}
 .gnb_2dul {background:#383838}
 .gnb_2da {padding:10px;border-top:1px solid #282828}
 .gnb_2da span:before {display:inline-block;margin:0 10px 0 0;color:#666;content:'▶'}

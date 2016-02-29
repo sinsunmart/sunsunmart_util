@@ -1,36 +1,4 @@
 <?php
-//echo $_POST['date'];
-//$d1->setTimezone(new DateTimezone($_POST['timezone']));
-//echo $d1->format($_POST['format']);
-
-
-
-/*
-    // 클라이언트에서 데이터 가져오기
-    $date = $_POST['date'];
-    /*$_50000_sum = $_POST['_50000_sum'];
-    $_10000_sum = $_POST['_10000_sum'];
-    $_5000_sum = $_POST['_5000_sum'];
-    $_1000_sum = $_POST['_1000_sum'];
-    $_500_sum = $_POST['_500_sum'];
-    $_100_sum = $_POST['_100_sum'];
-    $_50_sum = $_POST['_50_sum'];
-    $_10_sum = $_POST['_10_sum'];
-
-    $sum_CashCalc = $_POST['sum_CashCalc'];    // 현금소계
-    $presentCash = $_POST['presentCash'];      // 현금시제
-    $spendList_t_n = $_POST['spendList_t_n'];  // 지출내역 텍스트+금액
-    $sum_SpendingCalc = $_POST['sum_SpendingCalc']; // 지출내역합계금액
-    $saledCash = $_POST['saledCash'];          // 현금판매
-    $overAndShort = $_POST['overAndShort'];    // 과부족
-    $deposit = $_POST['deposit'];              // 현금입금
-    $memo = $_POST['g_Memo'];                  // 전달사항
-
-    $test = $_POST['test'];
-    $id = $_POST['id'];
-*/
-
-
 
     $conn = mysql_connect("localhost", "root", "95832983");
     //$conn = mysql_connect("52.79.108.63", "root", "95832983");
