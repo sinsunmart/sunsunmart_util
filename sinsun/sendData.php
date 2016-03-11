@@ -3,6 +3,7 @@
       session_start();
 
       $date = $_POST['date'];
+      $closing_time = $_POST['closing_time'];
       $time_start = $_POST['time_start'];
       $time_end = $_POST['time_end'];
       $_50000_sum = $_POST['_50000_sum'];
@@ -55,7 +56,7 @@
       }
 
 
-      $sql = "INSERT INTO `closingdata` VALUES ('{$date}', '{$time_start}', '{$time_end}', '{$_50000_sum}', '{$_10000_sum}', '{$_5000_sum}', '{$_1000_sum}', '{$_500_sum}', '{$_100_sum}', '{$_50_sum}', '{$_10_sum}', '{$sum_CashCalc}', '{$presentCash}', '{$spendList_t_n}', '{$sum_SpendingCalc}', '{$saledCash}', '{$overAndShort}', '{$deposit}', '{$memo}', '{$id}')";
+      $sql = "INSERT INTO `closingdata` VALUES ('{$date}', '{$closing_time}', '{$time_start}', '{$time_end}', '{$_50000_sum}', '{$_10000_sum}', '{$_5000_sum}', '{$_1000_sum}', '{$_500_sum}', '{$_100_sum}', '{$_50_sum}', '{$_10_sum}', '{$sum_CashCalc}', '{$presentCash}', '{$spendList_t_n}', '{$sum_SpendingCalc}', '{$saledCash}', '{$overAndShort}', '{$deposit}', '{$memo}', '{$id}')";
       //$sql = "INSERT INTO `closingdata` VALUES ('{$date}', '{$_50000_sum}', '{$_10000_sum}', '{$_5000_sum}', '{$_1000_sum}', '{$_500_sum}', '{$_100_sum}', '{$_50_sum}', '{$_10_sum}', '{$sum_CashCalc}', '{$presentCash}', '{$spendList_t_n}', '{$sum_SpendingCalc}', '{$saledCash}', '{$overAndShort}', '{$deposit}', '{$memo}', '{$id}')";
 
       $result = mysql_query($sql);

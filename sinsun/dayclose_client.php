@@ -64,11 +64,16 @@ include_once(G5_MOBILE_PATH.'/head.php');
       var deposit = 0;      // 현금입금
       var g_Memo;            // 전달사항
 
-      var addingVal = 1;
+      var addingVal = 0;
 
-      var g_Time_Start = 0;
-      var g_Time_end = 0;
+      var g_Time = new Date().toLocaleTimeString().substr(3, 5);
+      //var g_Time = new Date().toLocaleTimeString();
 
+      var g_Time_Start = '';
+      var g_Time_end = '';
+
+      var g_strArr_start  = g_Time_Start.split(':');
+      var g_strArr_end  = g_Time_end.split(':');             
     </script>
 
     <div class="container-fluid">
@@ -91,37 +96,69 @@ include_once(G5_MOBILE_PATH.'/head.php');
                 <p>날짜 : <input type="date" name="n_date" onfocusout="GetDate()"></p>
 
                 <!--  근무시간 선택 -->
-                <p>근무시작시간 : <input type="time" id="id_time_start"></p>
-                <p>근무종료시간 : <input type="time" id="id_time_end" ></p>
+                <p>근무시작시간</p>
+                <select id="id_hour_start" >
+                    <option value="">몇시</option>
+                    <?php for($i=8;$i<25;$i++) {?>
+                    <option value="<?php echo $i ?>"> <?php echo $i.'시';?></option>
+                    <?php } ?>
+                </select>
+
+                <select id="id_minute_start" >
+                    <option value="">몇분</option>
+                    <option value="00">00분</option>
+                    <option value="10">10분</option>
+                    <option value="20">20분</option>
+                    <option value="30">30분</option>
+                    <option value="40">40분</option>
+                    <option value="50">50분</option>
+
+                </select>
+
+                <p>근무종료시간</p>
+                <select id="id_hour_end" >
+                    <option value="">몇시</option>
+                    <?php for($i=8;$i<25;$i++) {?>
+                    <option value="<?php echo $i ?>"> <?php echo $i.'시';?></option>
+                    <?php } ?>
+                </select>
+
+                <select id="id_minute_end" >
+                    <option value="">몇분</option>
+                    <option value="00">00분</option>
+                    <option value="10">10분</option>
+                    <option value="20">20분</option>
+                    <option value="30">30분</option>
+                    <option value="40">40분</option>
+                    <option value="50">50분</option>
+
+                </select>
+
                 <script>
-                  var time_event_start = document.getElementById('id_time_start');
+                // 시작시간
+                document.getElementById('id_hour_start').addEventListener('change', function(event){
+                  // 시작 hour                  
+                    g_strArr_start[0] = this.value;
+                });
 
-                    time_event_start.addEventListener('focusout', function(event){
-                      g_Time_Start = event.target.value + ':00';
+                document.getElementById('id_minute_start').addEventListener('change', function(event){
+                  // 시작 minute
+                    g_strArr_start[1] = this.value;
+                });
 
-                      var t = g_Time_Start.split(':');
-                      t[0]*=1;t[1]*=1;t[2]*=1;
-                      if(t[1]%10!=0)
-                      {
-                        alert('분은 10분단위로 입력하세요!');
-                      }
-                        
-                      
-                    });
+                // 종료시간
+                document.getElementById('id_hour_end').addEventListener('change', function(event){
+                  // 시작 hour                  
+                    g_strArr_end[0] = this.value;
+                });
 
-                  var time_event_end = document.getElementById('id_time_end');
-                  time_event_end.addEventListener('focusout', function(event){
-                    g_Time_end = event.target.value + ':00';
+                document.getElementById('id_minute_end').addEventListener('change', function(event){
+                  // 시작 minute
+                    g_strArr_end[1] = this.value;
+                });
 
-                    var t = g_Time_Start.split(':');
-                    t[0]*=1;t[1]*=1;t[2]*=1;
-                    if(t[1]%10!=0)
-                    {
-                      alert('분은 10분단위로 입력하세요!');
-                    }
-                      
-                  });
-                </script>
+
+                </script> 
                 <!--  근무시간 선택 끝 -->
 
                 <thead><tr><th>현금계수</th><th>수량</th><th>금액</th></tr></thead>
@@ -151,17 +188,44 @@ include_once(G5_MOBILE_PATH.'/head.php');
               <table class="table" id="spendingListTable">
 
                 <thead><tr><th>현금지출내역</th><th>지출금액</th></tr></thead>
-                <tbody>
 
-                  <tr><td>지출소계</td><td><div class="input-block-level" id="won_unit" name="spendingMoneyValue">합계금액</div></td><td></td></tr>
-                </tbody>
+                <tr><td>지출소계</td><td><div id="id_spend_sum" name="spendingMoneyValue">합계금액</div></td><td></td></tr>
+                
+                <tr><td><input type="button" id="id_addList" value="목록추가"></td><td><input type="button" id="id_remove" value="목록삭제"></td></tr>
+                <tr id="spendingListTable_0"><td>목록:<input type="text" id="id_spend_text_0"></td><td>금액:<input type="text" id="id_spend_money_0" onfocusout="GetSpendListMoney()"></td></tr>
                 <script>
-                // 현금지출내역 리스트시작
-                document.write('<tr id="spendingListTable'+addingVal+'"><td><input class="input-block-level" type="text" id="id_spendingListTag_text'+addingVal+'"" name="spendingListTag_text'+addingVal+'"></td><td><input class="input-block-level" type="text" name="spendingListTag_money'+addingVal+'" onfocusout="SpendListFocusOut(addingVal)"></td></tr>');
 
-                // 목록추가, 목록삭제버튼
-                // onclick 함수 인자로 1을주면 목록추가, 2을 주면 목록삭제
-                document.write('<tr><td><input type="button" name="add_btn" value="목록추가" onclick="AddSpendingList(1)"></td><td><input type="button" name="del_btn"  value="목록삭제" onclick="AddSpendingList(2)"></td></tr>');  // onclick 함수 인자로 1을 주면 목록추가
+                // 목록추가
+                document.getElementById('id_addList').addEventListener('click', function(event){
+                  AddList();
+                });
+
+                function AddList()
+                {
+                  addingVal++;
+
+                  var append = '';
+                  append += '<tr id="spendingListTable_'+addingVal+'"><td>목록:<input type="text" id="id_spend_text_'+addingVal+'"></td><td>금액:<input type="text" id="id_spend_money_'+addingVal+'" onfocusout="GetSpendListMoney()"></td></tr>';
+
+                  $('#spendingListTable').append(append);                     
+                }
+
+
+                // 목록삭제
+                document.getElementById('id_remove').addEventListener('click', function(event){
+                  RemoveList();
+                });
+
+                function RemoveList()
+                {
+                  if(addingVal>0)
+                  {
+                    var rm_str = '#spendingListTable_' + addingVal;
+                    $(rm_str).remove();
+
+                    addingVal--;                    
+                  }
+                }
 
                 </script>
 
@@ -190,6 +254,73 @@ include_once(G5_MOBILE_PATH.'/head.php');
     </div> <!-- /container -->
 
     <script type="text/javascript">
+      function GetSpendListMoney()
+       {
+        var val_input=0;
+
+        sum_SpendingCalc = 0;
+        
+
+        for(var i=0; i<addingVal+1; i++)
+        { 
+
+          val_input = document.getElementById('id_spend_money_'+i).value;
+
+          if(isNaN(val_input))  // 숫자가 아니면
+          {
+            alert('숫자만 입력 가능합니다');
+            
+            return sum_SpendingCalc;
+          }
+
+          val_input = val_input*1; // 숫자로 만들어주기
+
+          // 지출금액 입력란 값 가져오기
+          sum_SpendingCalc += val_input;
+        }
+
+        // 지출금액 합계 표시하기
+        document.getElementById('id_spend_sum').innerHTML = sum_SpendingCalc;
+
+        return sum_SpendingCalc;
+
+       }
+
+       function GetSpendListText()   // 데이터 전송시 지출내역 텍스트값과 지출금액을 합해서 리턴해주는 함수
+       {
+          
+          spendListText = " ";
+          spendList_t_n = " ";
+
+          var val_input;
+
+          sum_SpendingCalc = 0;
+
+          for(var i=0; i<addingVal+1; i++)
+          {
+            var str_spendList = " ";
+
+            str_spendList = document.getElementById('id_spend_text_'+i).value;
+
+            // 지출금액 입력란 텍스트값 가져오기
+            spendListText += str_spendList;
+            spendListText += ",";
+
+            // 지출금액 입력란 숫자값 가져오기
+            val_input = document.getElementById('id_spend_money_'+i).value;
+            val_input = val_input*1; // 숫자로 만들어주기
+            sum_SpendingCalc += val_input;
+
+            // 지출내역 텍스트+숫자 합친값 구하기
+            spendList_t_n += str_spendList;
+            spendList_t_n += val_input;
+            spendList_t_n += ",";
+          }
+
+          //return spendListText;
+          return spendList_t_n;
+
+       }
 
       function CalcFocusOut(val)
        {
@@ -242,131 +373,6 @@ include_once(G5_MOBILE_PATH.'/head.php');
 
          document.getElementsByName('sum')[0].innerHTML = '합계금액 : ' + sum_CashCalc + ' 원';
          return sum_CashCalc;
-       }
-
-       function AddSpendingList(v)  // 인자로 1이 들어오면 목록추가, 2가 들어오면 목록삭제
-       {
-         //spendingListTag_money
-
-
-         if(v==1) // 목록추가
-         {
-           //alert(GetSpendListText()); 테스트용
-           // 테이블 추가
-           addingVal += 1;
-
-           var insert_str_Id = "#spendingListTable";
-
-           var inser_str_tag='<tr id="spendingListTable'+addingVal+'"><td><input type="text" name="spendingListTag_text'+addingVal+'"></td><td><input type="text" name="spendingListTag_money'+addingVal+'" onfocusout="SpendListFocusOut(addingVal)"></td></tr>';
-           //var inser_str_tag='<tr id="spendingListTable'+addingVal+'"><td><input type="text" name="spendingListTag_text'+addingVal+'"></td><td><input type="text" name="spendingListTag_money'+addingVal+'"></td><td><div name="spendingMoneyValue'+addingVal+'">금액</div></td></tr>';
-
-           $(insert_str_Id).append(inser_str_tag);
-         }
-         else if(v==2) // 목록삭제
-         {
-           if(addingVal>1)
-           {
-             var str_addedList = "#spendingListTable" + addingVal;
-             //var str_addedList_money = "#spendingListTag_money" + addingVal;
-             $(str_addedList).remove();
-             //$(str_addedList_money).remove();
-             addingVal -=1;
-
-             // 합계금액 초기화
-             sum_SpendingCalc = 0;
-             var val_calc=0;
-
-             for(var i=1; i<addingVal+1; i++)
-             {
-               val_calc = document.getElementsByName('spendingListTag_money'+i)[0].value;
-
-               val_calc = val_calc*1; // 숫자로 만들어주기
-
-               // 지출금액 입력란 값 가져오기
-               sum_SpendingCalc += val_calc;
-             }
-
-             // 지출금액 합계 표시하기
-             document.getElementsByName('spendingMoneyValue')[0].innerHTML = sum_SpendingCalc;
-           }
-         }
-
-
-       }
-
-       function SpendListFocusOut(value_adding)
-       {
-         if(addingVal>0)
-         {
-           var val_input=0;
-
-           sum_SpendingCalc = 0;
-
-           if(!isNaN(document.getElementsByName('spendingListTag_money'+addingVal)[0].value))  // 숫자만 입력가능합니다
-            {
-              for(var i=1; i<addingVal+1; i++)
-              {
-                val_input = document.getElementsByName('spendingListTag_money'+i)[0].value;
-
-                val_input = val_input*1; // 숫자로 만들어주기
-
-                // 지출금액 입력란 값 가져오기
-                sum_SpendingCalc += val_input;
-              }
-
-              // 지출금액 합계 표시하기
-              document.getElementsByName('spendingMoneyValue')[0].innerHTML = sum_SpendingCalc;
-
-              return sum_SpendingCalc;
-            }
-            else
-            {
-
-              alert('숫자만 입력 가능합니다');
-              event.returnValue = false;
-              return 0;
-            }
-
-         }
-         else {
-           return sum_SpendingCalc;
-         }
-       }
-
-       function GetSpendListText()   // 데이터 전송시 지출내역 텍스트값과 지출금액을 합해서 리턴해주는 함수
-       {
-          // name: spendingListTag_text + addingVal
-          spendListText = " ";
-          spendList_t_n = " ";
-
-          var val_input;
-
-          sum_SpendingCalc = 0;
-
-          for(var i=1; i<addingVal+1; i++)
-          {
-            var str_spendList = " ";
-
-            str_spendList = document.getElementsByName('spendingListTag_text'+i)[0].value;
-
-            // 지출금액 입력란 텍스트값 가져오기
-            spendListText += str_spendList;
-            spendListText += ",";
-
-            // 지출금액 입력란 숫자값 가져오기
-            val_input = document.getElementsByName('spendingListTag_money'+i)[0].value;
-            val_input = val_input*1; // 숫자로 만들어주기
-            sum_SpendingCalc += val_input;
-
-            // 지출내역 텍스트+숫자 합친값 구하기
-            spendList_t_n += str_spendList;
-            spendList_t_n += val_input;
-            spendList_t_n += ",";
-          }
-
-          //return spendListText;
-          return spendList_t_n;
-
        }
 
        function GetSaledAmount()    // 현금판매 구하는 함수
@@ -422,6 +428,7 @@ include_once(G5_MOBILE_PATH.'/head.php');
 
        function SendData_DB()
        {
+
          if(GetDate()!= '')   // 날짜가 제대로 입력되어 있어야 가능
          {
            if (confirm("전송 하시겠습니까?"))
@@ -435,6 +442,31 @@ include_once(G5_MOBILE_PATH.'/head.php');
 
              obj["date"] = GetDate();
 
+             // 마감하는 시간
+             var d = new Date();
+             var time = '';
+             time += d.getHours();
+             time += ':';
+             time += d.getMinutes();
+             time += ':';
+             time += d.getSeconds();
+
+             obj['closing_time'] = time;
+
+             //근무시간구하기
+             g_Time_Start='';
+             g_Time_end='';
+             g_Time_Start +=g_strArr_start[0];
+             g_Time_Start +=':';
+             g_Time_Start +=g_strArr_start[1];
+             g_Time_Start +=':00';
+             g_Time_end += g_strArr_end[0];
+             g_Time_end +=':';
+             g_Time_end += g_strArr_end[1];
+             g_Time_end += ':00';
+
+                
+
              obj["time_start"] = g_Time_Start;
 
              obj["time_end"] = g_Time_end;
@@ -445,7 +477,7 @@ include_once(G5_MOBILE_PATH.'/head.php');
 
              obj["spendList_t_n"] = GetSpendListText();
 
-             obj["sum_SpendingCalc"] = SpendListFocusOut();
+             obj["sum_SpendingCalc"] = GetSpendListMoney();
 
              obj["saledCash"] = GetSaledAmount();
 

@@ -72,7 +72,7 @@ else
       #id_cashSum{
         margin-top: 10px;
         background:#A39A9A;
-        line-height: 200%;
+       line-height: 200%;
 
         -webkit-border-radius: 5px;
            -moz-border-radius: 5px;
@@ -265,15 +265,13 @@ else
 
                 <tr><td>현금시제</td><td><div  id="id_presentCash" name="present_cash" >얼마</div></dt></tr>
               </table>
-
+              
               <!-- 현금지출내역 리스트 테이블 -->
               <table class="table" id="spendingListTable">
                 <thead><tr><th>현금지출내역</th><th>지출금액</th></tr></thead>
                 <tbody>
                   <tr><td id="id_spendList">지출소계</td><td><div id="id_cashSpendSum" name="spendingMoneyValue">합계금액</div></td><td></td></tr>
-
                 </tbody>
-
               </table>
 
               <table class="table" id="table_calc">
@@ -384,9 +382,9 @@ else
                 //document.getElementById('id_CasherId').innerHTML = "Casher: "+ "임중민";  // 캐셔아이디
                 $('#id_casher_show').html('마감캐셔 : 임중민');
               }
-              else 
+              else if(arr[17] == 3) // 캐셔 김윤희
               {
-
+                $('#id_casher_show').html('마감캐셔 : 김윤희');
               }
 
             }
