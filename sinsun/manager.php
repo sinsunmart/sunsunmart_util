@@ -134,6 +134,20 @@ else
 
       }
 
+      #id_excute{
+        font-size: 30px;
+        min-height: 40px; 
+        background-color: #82FA58;
+        min-width: 160px;
+        box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+        -webkit-border-radius: 5px;
+           -moz-border-radius: 5px;
+                border-radius: 5px;
+        -webkit-box-shadow: 0 1px 2px rgba(0,0,0,.05);
+           -moz-box-shadow: 0 1px 2px rgba(0,0,0,.05);
+                box-shadow: 0 1px 2px rgba(0,0,0,.05);
+      }
+
 
     </style>
     <link href="bootstrap/css/bootstrap-responsive.css" rel="stylesheet">
@@ -145,6 +159,7 @@ else
   <body>
     <script>
       var g_Date = '<?=$date?>';             // 날짜
+      var g_Date = '<?=$time?>';             // 마감시간
       //화폐단위별 합계금액 변수
       var _50000_sum = '<?=$_50000_sum?>';
       var _10000_sum = '<?=$_10000_sum?>';
@@ -184,7 +199,8 @@ else
         <div class="span12">
           <form class="form-signin" id="form_table" action="http://localhost/test.php" method="POST">
             <div class="bs-docs-example">
-              <table class="table" id="table_cashCalc">
+
+              <table class="table">
                 <h1>신선마트 Manager Page</h1>
                 <h3>일일정산시스템</h3>
                 <h5>관리자님 환영합니다</h5>
@@ -192,10 +208,21 @@ else
                 <h5>© Sinsun Corp</h5>
 
                 <p>날짜 : <input type="date" id="id_date" onfocusout=""><br/></p>
-                <input type="button" onclick="ExcuteData()" value="Excute"/></br>
-                <p id="id_casher_show">마감한캐셔:</p>
-                <p id="id_date_show">마감날짜:</p>
+                <input type="button" onclick="ExcuteData()" value="정산결과보기" id="id_excute"/></br>
+              </table>
 
+              <table class="table">
+                <tr><td id="id_casher_show">마감한캐셔:</td></tr>
+                <tr><td id="id_date_show">마감날짜:</td></tr>
+                <tr><td id="id_time_show">마감시각:</td></tr>                
+              </table>
+
+              <table class="table">
+              <tr><td id="id_work_start">근무시작:</td></tr>
+                <tr><td id="id_work_end">근무종료:</td></tr>
+              </table>
+
+              <table class="table" id="table_cashCalc">
 
                 <tr id="id_50000_tr"></tr>
                 <tr id="id_10000_tr"></tr>
@@ -278,6 +305,7 @@ else
                 <tr><td><div>현금판매(현금시제-지출소계) : </div></td><td><div id="id_cashSaled" name="saledAmount">현금판매금액</div></td></tr>
                 <tr><td><div>과부족(현금판매-현금소계) : </div></td><td><div id="id_overandshort" name="n_overAndShort">과부족금액</div></td></tr>
                 <tr><td><div>현금입금 : </div></td><td><div id="id_deposit" name="cashDeposit">현금입금액</div></td></tr>
+                <tr><td><div>다음날시작금액 : </div></td><td><div id="id_tmrw_start" name="cashDeposit">명일시작금액</div></td></tr>
                 <tr><td>메모:</td><td id="id_memo">메모내용</td></tr>
 
 
@@ -375,6 +403,10 @@ else
 
               //document.querySelector('#id_date_show').innerHTML = arr[0]; //  날짜
               $('#id_date_show').html('마감날짜 : ' + arr[0]);
+              $('#id_time_show').html('마감시간 : ' + arr[18]);
+              $('#id_tmrw_start').html(arr[19]);   // 내일시작금액
+              $('#id_work_start').html('근무시작시간: '+ arr[20]);   // 근무시작시간
+              $('#id_work_end').html('근무종료시간: '+ arr[21]);   // 근무종료시간
 
 
               if(arr[17] == 2)  //  캐셔 임중민 

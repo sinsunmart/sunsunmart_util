@@ -43,6 +43,7 @@
     $row = mysql_fetch_assoc($result);
 
     $date = $row['date'];
+    $time = $row['closingtime'];
 
     $_50000_sum = $row['fiveMan'];  // 가져오고 싶은 column ID
     $_10000_sum = $row['man'];
@@ -60,6 +61,7 @@
     $saledCash = $row['saled_cash'];          // 현금판매
     $overAndShort = $row['overandshort'];    // 과부족
     $deposit = $row['deposit_cash'];              // 현금입금
+    $tmrw_start = $row['tmrwstart'];        // 다음날 시작금액
     $memo = $row['memo'];                  // 전달사항
 
     $test = $row['test'];
@@ -83,7 +85,11 @@
     echo $overAndShort.'^';
     echo $deposit.'^';
     echo $memo.'^';
-    echo $id;
+    echo $id.'^';
+    echo $time.'^';     // 18번째 마감시간
+    echo $tmrw_start.'^';    // 19번째 명일시작금액
+    echo $row['time_start'].'^';
+    echo $row['time_end'];
 
     mysql_free_result($result);
 

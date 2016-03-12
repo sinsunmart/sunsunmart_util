@@ -21,6 +21,7 @@ $casher_id = get_session('ss_mb_id');
 
 <script>
     var casherId = <?php echo $casher_id ?>;
+    var g_worker = '';
 </script>
 
 <html lang="en"> <!--2016년1월30일 버전관리시작-->
@@ -54,37 +55,28 @@ $casher_id = get_session('ss_mb_id');
         <div class="span12">
           <form class="form-signin" id="form_table" action="http://localhost/test.php" method="POST">
             <div class="bs-docs-example">
-              <table class="table">
-                
-                <h3>신선마트 근무시간관리</h3>
-                <h5>© Sinsun Corp</h5>
-               
 
-                
-                <?php
-                if($casher_id==0002)
-                {
-                    echo '<p>캐셔 : 임중민</p>';
-                }
-                else if($casher_id==0003)
-                {
-                    echo '<p>캐셔 : 김윤희</p>';
-                }
-                else
-                {
-                    echo '<p>캐셔 : 누굴까?</p>';
-                }
-                ?>
-                <p>시작날짜 : <input type="date" id="id_date_start"></p>
-                <p>종료날짜 : <input type="date" id="id_date_end"></p>    
-                <p>시급 : <input type="text" id="id_payAmount">원</p>
-                <tr><td><input type="button" value="전송" onclick="Send_Req_Data()"></td></tr>
-                </table>
+            <h3>신선마트 근무시간관리</h3>
+            <h5>© Sinsun Corp</h5>  
 
-                <table class="table">
-                <tr><td><div id="id_worktime">총근무시간: 000 분</div></td></tr>
-                    <tr><td><div id="id_payment">급여: 000 원</div></td></tr>
-                </table> 
+            <table class="table">
+                
+                <tr><td>시작날짜 : <input type="date" id="id_date_start"></td></tr>
+                <tr><td>종료날짜 : <input type="date" id="id_date_end"></td></tr>
+
+                <tr><td>근무자 : <select id="id_worker" >
+                    <option value="">누구?</option>
+                    <option value="김윤희">김윤희</option>
+                    <option value="0">캐셔1</option>
+                </select></td></tr>
+                <tr><td>시급 : <input type="number" id="id_payAmount">원</td></tr>
+                <tr><td><input type="button" value="결과보기" id="id_excute" onclick="Send_Req_Data()"></td></tr>
+                <tr><td><div id="id_worktime_m">근무시간(분): 000 분</div></td></tr>
+                <tr><td><div id="id_worktime_h">근무시간(시간): 000 분</div></td></tr>
+                <tr><td id="id_payperten">10분당 시급: </td></tr>
+                <tr><td><div id="id_payment">급여: 000 원</div></td></tr>
+            </table>
+
 
             </div>
           </form>
@@ -99,6 +91,11 @@ $casher_id = get_session('ss_mb_id');
     
 
     <script>
+    document.getElementById('id_worker').addEventListener('change', function(event){
+                  // 시작 minute
+                    g_worker = this.value;
+                });
+
     function CheckDate()
     {
         var d_start = document.getElementById('id_date_start').value;
@@ -133,6 +130,11 @@ $casher_id = get_session('ss_mb_id');
             return true;
     }
 
+    function GetPay()
+    {
+
+    }
+
     function Send_Req_Data()
     {
         var d_start = '';
@@ -156,17 +158,26 @@ $casher_id = get_session('ss_mb_id');
          var data = '';
          data += 'date_start='+ d_start;
          data += '&date_end='+ d_end;
-         data += '&casherId=' + casherId;
+         if(g_worker=='캐셔')
+         {
+            data += '&casherId=' + 2;   
+         }
+         else if(g_worker=='김윤희')
+         {
+            data += '&casherId=' + 3;
+         }
+         
 
 
          xhr.onreadystatechange = function(){
              if(xhr.readyState === 4 && xhr.status === 200)
                {
-                 var v = xhr.responseText;
-                 v *=1;
-                 var h = v/60;
+                 var g_worktime = xhr.responseText;
+                 g_worktime *=1;
+                 var h = g_worktime/60;
                  h = Math.round(h);
-                 var m_left = v%60;
+                 var m_left = g_worktime%60;
+                 var m_per = m_left/10;
 
                  var pay_rate = document.getElementById('id_payAmount').value;
                  pay_rate *=1;  // 시급
@@ -175,12 +186,17 @@ $casher_id = get_session('ss_mb_id');
                  rate = Math.round(rate);
 
                  var pay_h = pay_rate * h;
-                 var pay_m = rate * m_left;
+                 var pay_m = rate * m_per;
 
                  var sum = pay_m + pay_h;
 
-                 document.getElementById('id_worktime').innerHTML = '총근무시간 : ' + h + '시간' + m_left + ' 분';
-                 document.getElementById('id_payment').innerHTML = '급여 : ' + sum + ' 원';
+                 document.getElementById('id_worktime_m').innerHTML = '근무시간(분): '+ g_worktime +'분';
+                 document.getElementById('id_worktime_h').innerHTML = '근무시간(시간): ' + h + '시간' + m_left + ' 분';
+                 document.getElementById('id_payperten').innerHTML = '10분당 시급: '+ rate;
+
+                 var pay = Math.floor(sum/100);
+
+                 document.getElementById('id_payment').innerHTML = '급여 : ' + pay*100 + ' 원';
                  
                }
                else

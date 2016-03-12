@@ -73,7 +73,8 @@ include_once(G5_MOBILE_PATH.'/head.php');
       var g_Time_end = '';
 
       var g_strArr_start  = g_Time_Start.split(':');
-      var g_strArr_end  = g_Time_end.split(':');             
+      var g_strArr_end  = g_Time_end.split(':');      
+      var g_tmrw_start = 0;       
     </script>
 
     <div class="container-fluid">
@@ -232,12 +233,19 @@ include_once(G5_MOBILE_PATH.'/head.php');
               </table>
 
               <table class="table" id="table_calc">
-                <tr><td><div>현금판매(현금시제-지출소계) : <input class="input-block-level" type="button" onclick="GetSaledAmount()" value="Get"></div></td><td><div name="saledAmount">현금판매</div></td></tr>
-                <tr><td><div>과부족(현금판매-현금소계) : <input class="input-block-level" type="button" onclick="GetOverandShort()" value="Get"></div></td><td><div name="n_overAndShort">과부족</div></td></tr>
-                <tr><td><div>현금입금 : <input class="input-block-level" type="button" onclick="GetCashDeposit()" value="Get"></div></td><td><div name="cashDeposit">현금입금</div></td></tr>
-                <tr><td>메모:<input class="input-block-level" type"textarea" name="textarea" onkeyup="resize(this)" onfocusout="GetMemo()"></td></tr>
-                <tr><td><input class="input-block-level" type="button" name="" onclick="PageReload()" value="전체초기화"></td><td><input class="input-block-level" type="button" onclick="SendData_DB()" name="" value="전송"></td></tr>
+                <tr><td><input type="button" value="정산하기" id="id_excute"></td></tr>
+                <tr><td><div>현금판매(현금시제-지출소계) : </div></td><td><div name="saledAmount">현금판매</div></td></tr>
+                <tr><td><div>과부족(현금판매-현금소계) : </div></td><td><div name="n_overAndShort">과부족</div></td></tr>
+                <tr><td><div>현금입금 : </div></td><td><div name="cashDeposit">현금입금</div></td></tr>
+                <tr><td><div>내일시작금액 : </div></td><td><div id="id_tomorrow_start">내일시작금액</div></td></tr>
+              </table>
 
+              <table class="table" id="table_calc">
+              <tr><td>메모:<input class="input-block-level" type="textarea" name="textarea" onkeyup="resize(this)" onfocusout="GetMemo()"></td></tr>              
+              </table>
+
+              <table class="table">
+                <tr><td><input class="input-block-level" type="button" name="" onclick="PageReload()" value="전체초기화"></td><td><input class="input-block-level" type="button" onclick="SendData_DB()" id="id_excute" value="전 송"></td></tr>
               </table>
 
             </div>
@@ -398,11 +406,29 @@ include_once(G5_MOBILE_PATH.'/head.php');
        function GetCashDeposit()   // 현금입금 구하는 함수
        {
          var bigCash = _50000_sum + _10000_sum;
-         var deposit = (bigCash*1) - 100000;    // 10만원을 차감한 나머지 만원권 입금
+         if(bigCash>100000)
+         {
+            var deposit = (bigCash*1) - 100000;    // 10만원을 차감한 나머지 만원권 입금
 
-         document.getElementsByName('cashDeposit')[0].innerHTML = deposit*1;
-         return deposit;
+           document.getElementsByName('cashDeposit')[0].innerHTML = deposit*1;
+           return deposit;
+         }
+         else
+          return 0;         
        }
+
+       // 정산버튼
+        document.getElementById('id_excute').addEventListener('click', function(event){
+          GetSaledAmount();
+          GetOverandShort();
+          GetCashDeposit();
+
+          var cashSum = GetCashSum();
+          var cashDeposit = GetCashDeposit();
+          g_tmrw_start = cashSum - cashDeposit;
+          g_tmrw_start = g_tmrw_start*1;
+          document.getElementById('id_tomorrow_start').innerHTML = g_tmrw_start;
+        });
 
        function GetDate()  // 날짜구하는 함수
        {
@@ -495,6 +521,8 @@ include_once(G5_MOBILE_PATH.'/head.php');
              obj["_100_sum"] = _100_sum;
              obj["_50_sum"] = _50_sum;
              obj["_10_sum"] = _10_sum;
+
+             obj['tmrw_start'] = g_tmrw_start;
 
              obj["id"] = <?php echo get_session('ss_mb_id'); ?>;
 

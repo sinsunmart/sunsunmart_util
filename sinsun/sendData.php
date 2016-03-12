@@ -26,6 +26,7 @@
 
       $test = $_POST['test'];
       $id = $_POST['id'];
+      $tmrw_start = $_POST['tmrw_start'];
       //echo testphp;
       //echo $_50000_sum;
 
@@ -56,7 +57,7 @@
       }
 
 
-      $sql = "INSERT INTO `closingdata` VALUES ('{$date}', '{$closing_time}', '{$time_start}', '{$time_end}', '{$_50000_sum}', '{$_10000_sum}', '{$_5000_sum}', '{$_1000_sum}', '{$_500_sum}', '{$_100_sum}', '{$_50_sum}', '{$_10_sum}', '{$sum_CashCalc}', '{$presentCash}', '{$spendList_t_n}', '{$sum_SpendingCalc}', '{$saledCash}', '{$overAndShort}', '{$deposit}', '{$memo}', '{$id}')";
+      $sql = "INSERT INTO `closingdata` VALUES ('{$date}', '{$closing_time}', '{$time_start}', '{$time_end}', '{$_50000_sum}', '{$_10000_sum}', '{$_5000_sum}', '{$_1000_sum}', '{$_500_sum}', '{$_100_sum}', '{$_50_sum}', '{$_10_sum}', '{$sum_CashCalc}', '{$presentCash}', '{$spendList_t_n}', '{$sum_SpendingCalc}', '{$saledCash}', '{$overAndShort}', '{$deposit}', '{$tmrw_start}', '{$memo}', '{$id}')";
       //$sql = "INSERT INTO `closingdata` VALUES ('{$date}', '{$_50000_sum}', '{$_10000_sum}', '{$_5000_sum}', '{$_1000_sum}', '{$_500_sum}', '{$_100_sum}', '{$_50_sum}', '{$_10_sum}', '{$sum_CashCalc}', '{$presentCash}', '{$spendList_t_n}', '{$sum_SpendingCalc}', '{$saledCash}', '{$overAndShort}', '{$deposit}', '{$memo}', '{$id}')";
 
       $result = mysql_query($sql);
