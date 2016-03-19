@@ -1,6 +1,6 @@
 
 <?php
- 
+
 class GCM {
  
     //put your code here
@@ -12,16 +12,25 @@ class GCM {
     /**
      * Sending Push Notification
      */
-    public function send_notification($registatoin_ids, $message) {
+    public function send_notification($registatoin_ids, $message) 
+    {
+        //echo('<script>console.log("message : '.$message.'");</script>');
         // include config
         include_once './config.php';
  
         // Set POST variables
         $url = 'https://android.googleapis.com/gcm/send';
  
+        // $fields = array(
+        //     'registration_ids' => $registatoin_ids,
+        //     //'data' => $message,
+        //     'title' => $title,
+        //     'message' => $message,
+        // );
+
         $fields = array(
             'registration_ids' => $registatoin_ids,
-            'data' => $message,
+            'data' => array('title' => APP_TITLE, 'message' => $message)
         );
  
         $headers = array(
@@ -52,6 +61,11 @@ class GCM {
         // Close connection
         curl_close($ch);
         echo $result;
+    }
+
+    public function dosomething()
+    {
+        return true;
     }
  
 }

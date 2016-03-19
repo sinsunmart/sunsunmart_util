@@ -23,21 +23,33 @@ class DB_Functions
      * Storing new user
      * returns user details
      */
-    public function storeUser($name, $email, $gcm_regid) {
+    public function storeUser($name, $email, $gcm_regid) 
+    {
+        // 이전에 이미 가입된 회원인지 regid를 검색
+        $is_already = mysql_query("SELECT * FROM gcm_users WHERE id = '$gcm_regid'") or die(mysql_error());
+        if(mysql_num_rows($is_already)>0)
+        {
+            return false;
+            exit;
+        }
         // insert user into database
         $result = mysql_query("INSERT INTO gcm_users(name, email, gcm_regid, created_at) VALUES('$name', '$email', '$gcm_regid', NOW())");
         // check for successful store
-        if ($result) {
+        if ($result) 
+        {
             // get user details
             $id = mysql_insert_id(); // last inserted id
             $result = mysql_query("SELECT * FROM gcm_users WHERE id = $id") or die(mysql_error());
             // return user details
-            if (mysql_num_rows($result) > 0) {
+            if (mysql_num_rows($result) > 0) 
+            {
                 return mysql_fetch_array($result);
-            } else {
+            } else 
+            {
                 return false;
             }
-        } else {
+        } else 
+        {
             return false;
         }
     }

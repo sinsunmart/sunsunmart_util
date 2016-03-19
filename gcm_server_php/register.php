@@ -18,11 +18,22 @@ if (isset($_POST["name"]) && isset($_POST["email"]) && isset($_POST["regId"])) {
  
     $db = new DB_Functions();
     $gcm = new GCM();
+
+    $allUser = $db->getAllUsers();
+    while ($row = mysql_fetch_assoc($allUser)) 
+    {         
+        if($gcm_regid == $row['gcm_regid'])       
+        {
+            exit;
+        }
+    }  
+
  
     $res = $db->storeUser($name, $email, $gcm_regid);
  
     $registatoin_ids = array($gcm_regid);
-    $message = array("product" => "shirt");
+    //$message = array("product" => "shirt");
+    $message = "앱이 성공적으로 설치되었습니다.";
  
     $result = $gcm->send_notification($registatoin_ids, $message);
  
